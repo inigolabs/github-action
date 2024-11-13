@@ -1,0 +1,62 @@
+name: Inigo GraphQL
+description: 'Inigo GraphQL github-action to run configuration/schema checks'
+
+inputs:
+  username:
+    required: true
+    description: 'Inigo account username.'
+  password:
+    required: true
+    description: 'Inigo account password.'
+  path:
+    required: true
+    description: 'Path to inigo configuration file(s).'
+  label:
+    required: false
+    description: 'Inigo service label.'
+  cli:
+    required: false
+    description: 'Path to inigo_cli. By default, latest inigo_cli will be used.'
+  cli_url:
+    required: false
+    description: 'URL to download Inigo CLI.'
+    default: 'https://github.com/inigolabs/artifacts/releases/latest/download/cli_linux_amd64.tar.gz'
+  github-token:
+    required: false
+    description: 'Github Token. Use {{ github.token }} by default.'
+    default: ${{ github.token }}
+
+runs:
+  using: composite
+  steps:
+    - name: Setup Node 20
+      uses: actions/setup-node@v4
+      with:
+        node-version: 20
+
+    - name: Install Inigo CLI and Login
+      if: ${{ inputs.cli == '' }}
+      run: wget -c ${{ inputs.cli_url }} -O - | tar -xz && ./inigo login;
+      env:
+        INIGO_USERNAME: ${{ inputs.username }}
+        INIGO_PASSWORD: ${{ inputs.password }}
+      shell: bash
+
+    - name: Inigo CLI Login
+      if: ${{ inputs.cli != '' }}
+      env:
+        INIGO_USERNAME: ${{ inputs.username }}
+        INIGO_PASSWORD: ${{ inputs.password }}
+      run: ${{ inputs.cli }} login
+      shell: bash
+
+    - name: Run Inigo CLI Checks
+      run: node ${{ github.action_path }}/dist/index.js
+      env:
+        INIGO_CLI: ${{ inputs.cli || './inigo' }}
+        INIGO_CONFIG_PATH: ${{ inputs.path }}
+        INIGO_SERVICE_LABEL: ${{ inputs.label }}
+
+        GITHUB_TOKEN: ${{ inputs.github-token }}
+        GITHUB_WORKSPACE: ${{ github.workspace }}
+      shell: bash
