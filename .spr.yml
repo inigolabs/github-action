@@ -1,0 +1,8 @@
+githubRepoOwner: inigolabs
+githubRepoName: github-action
+githubHost: github.com
+requireChecks: false
+requireApproval: true
+mergeMethod: rebase
+mergeQueue: false
+forceFetchTags: false
