@@ -31123,7 +31123,8 @@ async function run() {
     // run inigo_cli command
     const configs = path.resolve(process.env.GITHUB_WORKSPACE, process.env.INIGO_CONFIG_PATH);
     const cli = process.env.INIGO_CLI
-    let cmd = `${cli} check ${configs} --export-to=./output.json`
+    const action = process.env.INIGO_ACTION
+    let cmd = `${cli} ${action} ${configs} --export-to=./output.json`
 
     const label = process.env.INIGO_SERVICE_LABEL
     if (label !== "") {

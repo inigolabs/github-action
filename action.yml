@@ -14,6 +14,14 @@ inputs:
   label:
     required: false
     description: 'Inigo service label.'
+  action:
+    required: false
+    description: 'Action to perform: "check" for CI, "apply" for CD.'
+    type: choice
+    options:
+      - check
+      - apply
+    default: check
   cli:
     required: false
     description: 'Path to inigo_cli. By default, latest inigo_cli will be used.'
@@ -56,6 +64,7 @@ runs:
         INIGO_CLI: ${{ inputs.cli || './inigo' }}
         INIGO_CONFIG_PATH: ${{ inputs.path }}
         INIGO_SERVICE_LABEL: ${{ inputs.label }}
+        INIGO_ACTION: ${{ inputs.action }}
 
         GITHUB_TOKEN: ${{ inputs.github-token }}
         GITHUB_WORKSPACE: ${{ github.workspace }}
