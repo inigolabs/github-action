@@ -5,6 +5,8 @@ const util = require('util');
 const exec = util.promisify(require('child_process').exec);
 const fs = require('fs');
 
+process.env.INIGO_CLI_CLIENT_NAME = 'github-action'; // Inigo CLI picks it up to report within the client version
+
 run().catch(e => {
     console.log(e)
     core.setFailed(e.message || e);
