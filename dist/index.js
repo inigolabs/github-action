@@ -31093,6 +31093,8 @@ const util = __nccwpck_require__(3837);
 const exec = util.promisify((__nccwpck_require__(2081).exec));
 const fs = __nccwpck_require__(7147);
 
+process.env.INIGO_CLI_CLIENT_NAME = 'github-action'; // Inigo CLI picks it up to report within the client version
+
 run().catch(e => {
     console.log(e)
     core.setFailed(e.message || e);
