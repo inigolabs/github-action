@@ -61,3 +61,13 @@ Inigo uses service labels to distinguish environments. To share Inigo configurat
           path: configs/*.yml
           label: ${{ env.IS_STAGING && 'staging' || 'production' }}
 ```
+
+## On-premise Inigo instance
+
+```yaml
+      - name: Inigo GraphQL
+        uses: inigolabs/github-action@main
+        env:
+          INIGO_API_URL: '<inigo deployment url>'
+        ...
+```
